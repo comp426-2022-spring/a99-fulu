@@ -60,7 +60,7 @@ app.use( (req, res, next) => {
 })
 
 // Use morgan for logging to files
-const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
+const accessLog = fs.createWriteStream('./data/access.log', { flags: 'a' })
 app.use(morgan('combined', { stream: accessLog }))
 
 // endpoints
