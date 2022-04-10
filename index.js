@@ -89,7 +89,7 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/make-account', (req, res) => {
-    res.sendFile('public/views/make-account.html' , { root : __dirname});
+    res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
 })
 
 app.get('/user-account-page', (req, res) => {
