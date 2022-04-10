@@ -2,6 +2,7 @@ const express = require('express');
 const res = require('express/lib/response');
 const { process_params } = require('express/lib/router');
 const app = express();
+const Database = require('better-sqlite3')
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -10,9 +11,9 @@ const logging = (req, res, next) => {
     console.log(req.body.number);
 }
 
+// args
 sec_arg = process.argv.slice(2);
 let sec_arg_num;
-
 if (sec_arg.toString().includes('=')) {
     const index = sec_arg.toString().indexOf('=');
     sec_arg_num = sec_arg.toString().substring(index+1);
@@ -31,6 +32,45 @@ function coinFlip() {
     return (Math.floor(Math.random() * 2) == 0) ? 'heads' : 'tails';
 }
 
+// create database
+const db = new Database('log.db')
+
+// create table
+const sqlInit = `CREATE TABLE IF NOT EXISTS accesslog (id INTEGER PRIMARY KEY,
+        remoteaddr TEXT, remoteuser TEXT, time TEXT, method TEXT, url TEXT, protocol TEXT,
+        httpversion TEXT, secure TEXT, status INTEGER, referer TEXT, useragent TEXT
+    )`;
+db.exec(sqlInit)
+
+const addData = (req, res, next) => {
+    let logdata = {
+        remoteaddr: req.ip,
+        remoteuser: req.user,
+        time: Date.now(),
+        method: req.method,
+        url: req.url,
+        protocol: req.protocol,
+        httpversion: req.httpVersion,
+        secure: req.secure,
+        status: res.statusCode,
+        referer: req.headers['referer'],
+        useragent: req.headers['user-agent']
+    }
+    const prep = db.prepare(`INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol,
+        httpversion, secure, status, referer, useragent)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `)
+    prep.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, 
+        logdata.protocol, logdata.httpversion, log.secure, logdata.status, logdata.referer, logdata.useragent)
+    next()
+}
+
+// middleware adds data to table
+app.use( (req, res, next) => {
+    // Your middleware goes here.
+    addData(req, res, next)
+    res.status(200)
+})
 
 app.get('/', (req, res) => {
     res.status(200).send("./public/views/index.html");
