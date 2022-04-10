@@ -2,7 +2,7 @@ const express = require('express');
 const res = require('express/lib/response');
 const { process_params } = require('express/lib/router');
 const app = express();
-const Database = require('better-sqlite3');
+const db = require('./data/database.js');
 const fs = require('fs');
 const morgan = require('morgan');
 const path = require('path');
@@ -31,17 +31,6 @@ if(port_from_sec_arg > 0 && port_from_sec_arg < 65536) {
 }
 // console.log(sec_arg + " is the second argument")
 // console.log(port + " is the port")
-
-
-// create database
-const db = new Database('log.db')
-
-// create table
-const sqlInit = `CREATE TABLE IF NOT EXISTS accesslog (id INTEGER PRIMARY KEY,
-        remoteaddr TEXT, remoteuser TEXT, time TEXT, method TEXT, url TEXT, protocol TEXT,
-        httpversion TEXT, secure TEXT, status INTEGER, referer TEXT, useragent TEXT
-    )`;
-db.exec(sqlInit)
 
 const addData = (req, res, next) => {
     let logdata = {
