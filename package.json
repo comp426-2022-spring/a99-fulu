@@ -1,0 +1,19 @@
+{
+  "name": "a99-fulu",
+  "version": "1.0.0",
+  "description": "Our final project",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comp426-2022-spring/a99-fulu.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/comp426-2022-spring/a99-fulu/issues"
+  },
+  "homepage": "https://github.com/comp426-2022-spring/a99-fulu#readme"
+}
