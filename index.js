@@ -53,11 +53,11 @@ const addData = (req, res, next) => {
         logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
     next()
 }
-app.use( (req, res, next) => {
-    // Your middleware goes here.
-    addData(req, res, next)
-    res.status(200)
-})
+// app.use( (req, res, next) => {
+//     // Your middleware goes here.
+//     addData(req, res, next)
+//     res.status(200)
+// })
 
 // Use morgan for logging to files
 const accessLog = fs.createWriteStream('./data/access.log', { flags: 'a' })
@@ -89,7 +89,7 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/make-account', (req, res) => {
-    res.sendFile('public/views/make-account.html' , { root : __dirname});
+    res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
 })
 
 app.get('/user-account-page', (req, res) => {
