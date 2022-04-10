@@ -20,6 +20,7 @@ db.exec(userInit)
 const goalInit = `CREATE TABLE IF NOT EXISTS goals (goalID INTEGER PRIMARY KEY, 
     userID TEXT, goalname TEXT, goalmax TEXT, goalprogress TEXT)
 `
+db.exec(goalInit)
 
 //export database
 module.exports = db

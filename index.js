@@ -1,3 +1,4 @@
+// require things
 const express = require('express');
 const res = require('express/lib/response');
 const { process_params } = require('express/lib/router');
@@ -7,16 +8,14 @@ const fs = require('fs');
 const morgan = require('morgan');
 const path = require('path');
 
+// force express to use built-in json-parser
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-const logging = (req, res, next) => {
-    console.log(req.body.number);
-}
-
+// allow access to public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// args
+// parse args
 sec_arg = process.argv.slice(2);
 let sec_arg_num;
 if (sec_arg.toString().includes('=')) {
@@ -32,6 +31,7 @@ if(port_from_sec_arg > 0 && port_from_sec_arg < 65536) {
 // console.log(sec_arg + " is the second argument")
 // console.log(port + " is the port")
 
+// adds logdata to table with middleware
 const addData = (req, res, next) => {
     let logdata = {
         remoteaddr: req.ip,
@@ -53,30 +53,23 @@ const addData = (req, res, next) => {
         logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
     next()
 }
-
-// Use morgan for logging to files
-// Create a write stream to append (flags: 'a') to a file
-const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
-// Set up the access logging middleware
-app.use(morgan('combined', { stream: accessLog }))
-
-// middleware adds data to table
 app.use( (req, res, next) => {
     // Your middleware goes here.
     addData(req, res, next)
     res.status(200)
 })
 
+// Use morgan for logging to files
+const accessLog = fs.createWriteStream('./data/access.log', { flags: 'a' })
+app.use(morgan('combined', { stream: accessLog }))
+
+// endpoints
 app.get('/', (req, res) => {
-    // res.status(200).send("./public/views/index.html");
     res.sendFile('public/views/index.html' , { root : __dirname});
-    // res.send("./public/views/index.html");
 })
 
 app.get('/index', (req, res) => {
-    // res.status(200).send("./public/views/index.html");
     res.sendFile('public/views/index.html' , { root : __dirname});
-    // res.send("./public/views/index.html");
 })
 
 app.get('/add-goals', (req, res) => {
@@ -84,34 +77,29 @@ app.get('/add-goals', (req, res) => {
 })
 
 app.get('/goal-details', (req, res) => {
-    // res.status(200).send("./public/views/goal-details.html");
     res.sendFile('public/views/goal-details.html' , { root : __dirname});
 })
 
 app.get('/home', (req, res) => {
-    // res.status(200).send("./public/views/home.html");
     res.sendFile('public/views/home.html' , { root : __dirname});
 })
 
 app.get('/login', (req, res) => {
-    // res.status(200).send("./public/views/login.html");
-    res.sendFile('public/views/login.html' , { root : __dirname});
+    res.sendFile('public/views/login/login.html' , { root : __dirname});
 })
 
 app.get('/make-account', (req, res) => {
-    // res.status(200).send("./public/views/make-account.html");
     res.sendFile('public/views/make-account.html' , { root : __dirname});
 })
 
 app.get('/user-account-page', (req, res) => {
-    // res.status(200).send("./public/views/user-account-page.html");
     res.sendFile('public/views/user-account-page.html' , { root : __dirname});
 })
+
 const server = app.listen(port, () => {
     console.log(`App is running on port ${port}`);
 })
 
 app.use((req, res) => {
     res.status(404).send("Endpoint does not exist 😞");
-    // res.type("text/plain");
 })
