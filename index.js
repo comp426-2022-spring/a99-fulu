@@ -80,32 +80,43 @@ app.use( (req, res, next) => {
 
 app.get('/', (req, res) => {
     // res.status(200).send("./public/views/index.html");
-    res.sendFile('public/index.html' , { root : __dirname});
+    res.sendFile('public/views/index.html' , { root : __dirname});
+    // res.send("./public/views/index.html");
+})
+
+app.get('/index', (req, res) => {
+    // res.status(200).send("./public/views/index.html");
+    res.sendFile('public/views/index.html' , { root : __dirname});
     // res.send("./public/views/index.html");
 })
 
 app.get('/add-goals', (req, res) => {
-    res.status(200).send("./public/views/add-goals.html");
+    res.sendFile('public/views/add-goals.html' , { root : __dirname});
 })
 
 app.get('/goal-details', (req, res) => {
-    res.status(200).send("./public/views/goal-details.html");
+    // res.status(200).send("./public/views/goal-details.html");
+    res.sendFile('public/views/goal-details.html' , { root : __dirname});
 })
 
 app.get('/home', (req, res) => {
-    res.status(200).send("./public/views/home.html");
+    // res.status(200).send("./public/views/home.html");
+    res.sendFile('public/views/home.html' , { root : __dirname});
 })
 
 app.get('/login', (req, res) => {
-    res.status(200).send("./public/views/login.html");
+    // res.status(200).send("./public/views/login.html");
+    res.sendFile('public/views/login.html' , { root : __dirname});
 })
 
 app.get('/make-account', (req, res) => {
-    res.status(200).send("./public/views/make-account.html");
+    // res.status(200).send("./public/views/make-account.html");
+    res.sendFile('public/views/make-account.html' , { root : __dirname});
 })
 
 app.get('/user-account-page', (req, res) => {
-    res.status(200).send("./public/views/user-account-page.html");
+    // res.status(200).send("./public/views/user-account-page.html");
+    res.sendFile('public/views/user-account-page.html' , { root : __dirname});
 })
 const server = app.listen(port, () => {
     console.log(`App is running on port ${port}`);
