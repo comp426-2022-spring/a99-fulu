@@ -47,17 +47,16 @@ const addData = (req, res, next) => {
         url: req.url,
         protocol: req.protocol,
         httpversion: req.httpVersion,
-        secure: req.secure,
         status: res.statusCode,
         referer: req.headers['referer'],
         useragent: req.headers['user-agent']
     }
     const prep = db.prepare(`INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol,
-        httpversion, secure, status, referer, useragent)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        httpversion, status, referer, useragent)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
     prep.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, 
-        logdata.protocol, logdata.httpversion, log.secure, logdata.status, logdata.referer, logdata.useragent)
+        logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
     next()
 }
 
