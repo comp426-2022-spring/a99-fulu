@@ -65,6 +65,12 @@ const addData = (req, res, next) => {
     next()
 }
 
+// Use morgan for logging to files
+// Create a write stream to append (flags: 'a') to a file
+const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
+// Set up the access logging middleware
+app.use(morgan('combined', { stream: accessLog }))
+
 // middleware adds data to table
 app.use( (req, res, next) => {
     // Your middleware goes here.
