@@ -2,7 +2,10 @@ const express = require('express');
 const res = require('express/lib/response');
 const { process_params } = require('express/lib/router');
 const app = express();
-const Database = require('better-sqlite3')
+const Database = require('better-sqlite3');
+const fs = require('fs');
+const morgan = require('morgan');
+const path = require('path');
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -10,6 +13,8 @@ app.use(express.urlencoded({extended: true}))
 const logging = (req, res, next) => {
     console.log(req.body.number);
 }
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // args
 sec_arg = process.argv.slice(2);
@@ -74,7 +79,9 @@ app.use( (req, res, next) => {
 })
 
 app.get('/', (req, res) => {
-    res.status(200).send("./public/views/index.html");
+    // res.status(200).send("./public/views/index.html");
+    res.sendFile('public/index.html' , { root : __dirname});
+    // res.send("./public/views/index.html");
 })
 
 app.get('/add-goals', (req, res) => {
