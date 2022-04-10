@@ -24,13 +24,9 @@ if(port_from_sec_arg > 0 && port_from_sec_arg < 65536) {
 } else {
     port = 5000;
 }
-console.log(sec_arg + " is the second argument")
-console.log(port + " is the port")
+// console.log(sec_arg + " is the second argument")
+// console.log(port + " is the port")
 
-
-function coinFlip() {
-    return (Math.floor(Math.random() * 2) == 0) ? 'heads' : 'tails';
-}
 
 // create database
 const db = new Database('log.db')
@@ -82,47 +78,29 @@ app.get('/', (req, res) => {
     res.status(200).send("./public/views/index.html");
 })
 
-app.get('/app', (req, res) => {
-    res.status(200).end("200 OK\n");
-    res.type("text/plain");
+app.get('/add-goals', (req, res) => {
+    res.status(200).send("./public/views/add-goals.html");
 })
 
-app.get('/app/echo/:number', logging, (req, res) => {
-    res.status(200).json({'message': req.params.number});
+app.get('/goal-details', (req, res) => {
+    res.status(200).send("./public/views/goal-details.html");
 })
 
-app.get('/app/flip', (req, res) => {
-    var flip = coinFlip();
-    res.status(200).json({'flip': flip});
+app.get('/home', (req, res) => {
+    res.status(200).send("./public/views/home.html");
 })
 
-app.get('/app/flips/:number[0-9]{1,4}', (req, res) => {
-    var flips = coinFlips();
-    flipsObj = {}
-    res.status(200).json({'flip': flip});
+app.get('/login', (req, res) => {
+    res.status(200).send("./public/views/login.html");
 })
 
-app.get('/app/flips/call/heads', (req, res) => {
-    const game = flipACoin("heads")
-    res.status(200).json(game)
+app.get('/make-account', (req, res) => {
+    res.status(200).send("./public/views/make-account.html");
 })
 
-app.get('/app/flips/call/tails', (req, res) => {
-    const game = flipACoin("tails")
-    res.status(200).json(game)
+app.get('/user-account-page', (req, res) => {
+    res.status(200).send("./public/views/user-account-page.html");
 })
-
-app.get('/app/flip/call/:guess(heads|tails)', (req, res) => {
-    const game = flipACoin("tails")
-    res.status(200).json(game)
-})
-
-app.get('/*', (req, res) => {
-    res.status(400).end("404 Not Found")
-    // res.statusCode = 404;
-    // res.send("404 Not Found")
-})
-
 const server = app.listen(port, () => {
     console.log(`App is running on port ${port}`);
 })
