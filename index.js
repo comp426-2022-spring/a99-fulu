@@ -31,6 +31,11 @@ function coinFlip() {
     return (Math.floor(Math.random() * 2) == 0) ? 'heads' : 'tails';
 }
 
+
+app.get('/', (req, res) => {
+    res.status(200).send("./public/views/index.html");
+})
+
 app.get('/app', (req, res) => {
     res.status(200).end("200 OK\n");
     res.type("text/plain");

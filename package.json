@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/comp426-2022-spring/a99-fulu/issues"
   },
-  "homepage": "https://github.com/comp426-2022-spring/a99-fulu#readme"
+  "homepage": "https://github.com/comp426-2022-spring/a99-fulu#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
