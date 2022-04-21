@@ -76,6 +76,15 @@ app.get('/make-account', (req, res) => {
     res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
 })
 
+app.post('/make-account/make/', (req, res, next) => {
+    const username = req.body.user
+    const password = req.body.pass
+    // todo: middleware to add the new user to the database
+    // todo: i also have no idea how to check to make sure the user isn't already in the database
+    addUser(username, password)
+    res.status(200).json({user: username, pass: password})
+})
+
 app.get('/index', (req, res) => {
     res.sendFile('public/views/index.html' , { root : __dirname});
 })
