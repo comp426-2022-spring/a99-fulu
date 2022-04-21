@@ -65,23 +65,7 @@ app.use(morgan('combined', { stream: accessLog }))
 
 // endpoints
 app.get('/', (req, res) => {
-    res.sendFile('public/views/index.html' , { root : __dirname});
-})
-
-app.get('/index', (req, res) => {
-    res.sendFile('public/views/index.html' , { root : __dirname});
-})
-
-app.get('/add-goals', (req, res) => {
-    res.sendFile('public/views/add-goals.html' , { root : __dirname});
-})
-
-app.get('/goal-details', (req, res) => {
-    res.sendFile('public/views/goal-details.html' , { root : __dirname});
-})
-
-app.get('/home', (req, res) => {
-    res.sendFile('public/views/home.html' , { root : __dirname});
+    res.sendFile('public/views/login/login.html' , { root : __dirname});
 })
 
 app.get('/login', (req, res) => {
@@ -92,8 +76,24 @@ app.get('/make-account', (req, res) => {
     res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
 })
 
+app.get('/index', (req, res) => {
+    res.sendFile('public/views/index.html' , { root : __dirname});
+})
+
+app.get('/home', (req, res) => {
+    res.sendFile('public/views/home.html' , { root : __dirname});
+})
+
 app.get('/user-account-page', (req, res) => {
     res.sendFile('public/views/user-account-page.html' , { root : __dirname});
+})
+
+app.get('/add-goals', (req, res) => {
+    res.sendFile('public/views/add-goals.html' , { root : __dirname});
+})
+
+app.get('/goal-details', (req, res) => {
+    res.sendFile('public/views/goal-details.html' , { root : __dirname});
 })
 
 const server = app.listen(port, () => {
