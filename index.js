@@ -75,7 +75,6 @@ app.get('/login', (req, res) => {
 app.get('/make-account', (req, res) => {
     res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
 })
-
 app.post('/make-account/make/', (req, res, next) => {
     const username = req.body.user
     const password = req.body.pass
@@ -96,11 +95,15 @@ app.get('/home', (req, res) => {
 app.get('/user-account-page', (req, res) => {
     res.sendFile('public/views/user-account-page.html' , { root : __dirname});
 })
-
 app.get('/user-account-page/:username/', (req, res) => {
     // todo: make userDetails middleware
     const userDetails = getUserDetails(req.params.username)
     res.status(200).json(userDetails)
+})
+app.delete('/user-account-page/delete/:username/', (req, res) => {
+    // todo: write delete endpoint
+    // the endpoint is supposed to delete the user's account and then redirect to login page
+    // i have no idea what the structure of a delete endpoint looks like
 })
 
 app.get('/add-goals', (req, res) => {
