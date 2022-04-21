@@ -109,6 +109,13 @@ app.delete('/user-account-page/delete/:username/', (req, res) => {
 app.get('/add-goals', (req, res) => {
     res.sendFile('public/views/add-goals.html' , { root : __dirname});
 })
+app.post('add-goals/add/:user/', (req, res) => {
+    const goal = req.body.goal
+    const user = req.body.user
+    // todo: write middleware to addGoal to database
+    addGoal(user, goal)
+    res.status(200).json({goal: goal, user: user})
+})
 
 app.get('/goal-details', (req, res) => {
     res.sendFile('public/views/goal-details.html' , { root : __dirname});
