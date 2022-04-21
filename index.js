@@ -97,6 +97,12 @@ app.get('/user-account-page', (req, res) => {
     res.sendFile('public/views/user-account-page.html' , { root : __dirname});
 })
 
+app.get('/user-account-page/:username/', (req, res) => {
+    // todo: make userDetails middleware
+    const userDetails = getUserDetails(req.params.username)
+    res.status(200).json(userDetails)
+})
+
 app.get('/add-goals', (req, res) => {
     res.sendFile('public/views/add-goals.html' , { root : __dirname});
 })
