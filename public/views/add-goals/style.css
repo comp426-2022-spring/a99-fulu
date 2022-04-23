@@ -1,5 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Space+Mono:400,700);
-
+.home{
+    display: block;
+    width:100px;
+    font-size:20px;
+    margin-bottom: 1rem;
+  }
 html, body {
   height: 100%;
   width: 100%;
