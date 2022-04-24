@@ -90,8 +90,7 @@ app.get('/add-goals', (req, res) => {
 app.post('add-goals/add/:user/', (req, res) => {
     const goal = req.body.goal
     const user = req.body.user
-    // todo: write middleware to addGoal to database
-    addGoal(user, goal)
+    addGoal(req, res, next)
     res.status(200).json({goal: goal, user: user})
 })
 

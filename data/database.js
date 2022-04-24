@@ -18,7 +18,7 @@ db.exec(userInit)
 
 // create goals table
 const goalInit = `CREATE TABLE IF NOT EXISTS goals (goalID INTEGER PRIMARY KEY, 
-    userID TEXT, goalname TEXT, goalmax TEXT, goalprogress TEXT)
+    user TEXT, goal TEXT)
 `
 db.exec(goalInit)
 

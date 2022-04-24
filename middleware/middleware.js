@@ -24,4 +24,15 @@ const addData = (req, res, next) => {
     next()
 }
 
-module.exports = {addData}
+const addGoal = (req, res, next) => {
+    const goal = req.body.goal
+    const user = req.body.user
+    const add = db.prepare(`
+        INSERT INTO goals (user, goal)
+        VALUES (?, ?)
+    `)
+    add.run(user, goal)
+    next()
+}
+
+module.exports = {addData, addGoal}
