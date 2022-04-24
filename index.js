@@ -67,11 +67,11 @@ app.get('/index', (req, res) => {
 })
 
 app.get('/home', (req, res) => {
-    res.sendFile('public/views/home.html' , { root : __dirname});
+    res.sendFile('public/views/home/home.html' , { root : __dirname});
 })
 
 app.get('/user-account-page', (req, res) => {
-    res.sendFile('public/views/user-account-page.html' , { root : __dirname});
+    res.sendFile('public/views/user-account/user-account-page.html' , { root : __dirname});
 })
 app.get('/user-account-page/:username/', (req, res) => {
     // todo: make userDetails middleware
