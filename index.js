@@ -4,6 +4,7 @@ const res = require('express/lib/response');
 const { process_params } = require('express/lib/router');
 const app = express();
 const db = require('./data/database.js');
+const midware = require('./middleware/middleware.js')
 const fs = require('fs');
 const morgan = require('morgan');
 const path = require('path');
@@ -69,6 +70,16 @@ app.get('/index', (req, res) => {
 app.get('/home', (req, res) => {
     res.sendFile('public/views/home/home.html' , { root : __dirname});
 })
+app.get('/home/goals/:user', (req, res, next) => {
+    const user = req.params.user
+    const get = db.prepare(`
+        SELECT goalID, goal
+        FROM goals
+        WHERE user='` + user + `'
+    `).all()
+    // const goals = get.run(user)
+    res.status(200).json(get)
+})
 
 app.get('/user-account-page', (req, res) => {
     res.sendFile('public/views/user-account/user-account-page.html' , { root : __dirname});
@@ -87,11 +98,17 @@ app.delete('/user-account-page/delete/:username/', (req, res) => {
 app.get('/add-goals', (req, res) => {
     res.sendFile('public/views/add-goals.html' , { root : __dirname});
 })
-app.post('add-goals/add/:user/', (req, res) => {
+app.post('/add-goals/add/', (req, res, next) => {
     const goal = req.body.goal
     const user = req.body.user
-    addGoal(req, res, next)
-    res.status(200).json({goal: goal, user: user})
+
+    const add = db.prepare(`
+        INSERT INTO goals (user, goal)
+        VALUES (?, ?)
+    `)
+    add.run(user, goal)
+
+    res.status(200).json({"goal": goal, "user": user})
 })
 
 app.get('/goal-details', (req, res) => {
