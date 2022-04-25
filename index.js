@@ -54,9 +54,27 @@ app.post('/login-user/', (req, res) => {
     };
     // console.log(data.user);
     // console.log(data.pass);
-    const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ? AND pass = ?').get(data.user, data.pass);
+    try {
+        const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ? AND pass = ?').get(data.user, data.pass);
+        // res.status(200).json(stmt);
+        // console.log(stmt);
+        if(stmt){
+            res.redirect('/add-goals/')
+        } else {
+            res.redirect('/');
+        }
+    } catch(e) {
+        res.redirect('/');
+    }
 
-    res.redirect('/user-account-page/' + data.user);
+    // res.redirect('/add-goals/')
+
+    // res.redirect('/add-goals/');
+
+    // res.redirect('/home/goals/' + data.user);
+
+    // res.redirect('/user-account-page/' + data.user);
+
     // res.status(200).json(stmt);
     // res.sendFile('public/views/user-account/user-account-page.html' , { root : __dirname});
 })
@@ -69,16 +87,6 @@ app.get('/make-account', (req, res) => {
     res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
 })
 
-//  ▶️ OLD ENDPOINT
-// app.post('/make-account/make/', (req, res, next) => {
-//     const username = req.body.user
-//     const password = req.body.pass
-//     // todo: middleware to add the new user to the database
-//     // todo: i also have no idea how to check to make sure the user isn't already in the database
-//     addUser(username, password)
-//     res.status(200).json({user: username, pass: password})
-// })
-
 // ◀️ MY ENDPOINT
 // 🗒️ idk how to test this out yet, but it should work with the frontend html form with form body params
 app.post('/make-account/make/', (req, res, next) => {
@@ -86,9 +94,16 @@ app.post('/make-account/make/', (req, res, next) => {
         user: req.body.username,
         pass: req.body.password
     };
-    const stmt = db.prepare('INSERT INTO userinfo (user, pass) VALUES (?, ?)');
-    const info = stmt.run(data.user, data.pass);
-    res.status(200).redirect('/');
+
+    const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ?').get(data.user);
+
+    if(stmt){
+        res.redirect('/make-account');
+    } else {
+        const make = db.prepare('INSERT INTO userinfo (user, pass) VALUES (?, ?)');
+        const info = make.run(data.user, data.pass);
+        res.status(200).redirect('/');
+    }
 })
 
 app.get('/index', (req, res) => {
@@ -112,13 +127,6 @@ app.get('/home/goals/:user', (req, res, next) => {
 app.get('/user-account-page', (req, res) => {
     res.sendFile('public/views/user-account/user-account-page.html' , { root : __dirname});
 })
-
-//  ▶️ OLD ENDPOINT
-// app.get('/user-account-page/:username/', (req, res) => {
-//     // todo: make userDetails middleware
-//     const userDetails = getUserDetails(req.params.username)
-//     res.status(200).json(userDetails)
-// })
 
 // ◀️ MY ENDPOINT
 // 🗒️ idk how to test this out yet, but it should work
