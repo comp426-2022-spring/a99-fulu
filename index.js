@@ -129,9 +129,9 @@ app.get('/user-account-page/:user', (req, res) => {
 
 // ◀️ MY ENDPOINT
 // 🗒️ idk how to test this out yet, but it should work
-app.get('/user-account-page/get/:username/', (req, res) => {
+app.get('/user-account-page/:user/get', (req, res) => {
     try {
-        const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ?').get(req.params.username);
+        const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ?').get(req.params.user);
         res.status(200).json(stmt);
     } catch (e) {
         console.error(e);

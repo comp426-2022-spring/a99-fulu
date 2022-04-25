@@ -38,7 +38,7 @@
         document.addEventListener("DOMContentLoaded", getName);
         async function getName(){
           console.log('function')
-          const url = 'http://localhost:5000/user-account-page/get/test'
+          const url = document.documentURI + '/get/'
           const userInfo = await fetch(url).then(function(response) {
             return response.json()
           })
