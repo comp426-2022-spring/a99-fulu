@@ -113,6 +113,18 @@ app.get('/index', (req, res) => {
 app.get('/home', (req, res) => {
     res.sendFile('public/views/home/home.html' , { root : __dirname});
 })
+
+app.get('/home/goals/', (req, res, next) => {
+    const user = req.body.user
+    const get = db.prepare(`
+        SELECT goalID, goal
+        FROM goals
+        WHERE user='` + user + `'
+    `).all()
+    // const goals = get.run(user)
+    res.status(200).json(get)
+})
+
 app.get('/home/goals/:user', (req, res, next) => {
     const user = req.params.user
     const get = db.prepare(`

@@ -28,7 +28,7 @@ ul li {
   background: #eee;
   font-size: 18px;
   transition: 0.2s;
-  
+
   /* make the list items unselectable */
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -126,33 +126,6 @@ input {
 </style>
 </head>
 <body>
-<<<<<<< HEAD
-<header>
-  <a href="home.html">
-      <button>Home</button>
-    </a>
-  </header>
-
-<div class="container">
-  <div class="task__head task--row">YOUR GOALS (CLICK & HOLD TO REMOVE)</div>
-  <form action="">
-    <div class="task__list">
-    <label for="task--1" class="task"><input class="task__check" type="checkbox" id="task--1" /> <div class="task__field task--row"> Drink 8 cups of water<button class="task__important"><i class="fa fa-check" aria-hidden="true"></i></button></div></label>
-    <label for="task--2" class="task"><input class="task__check" type="checkbox" id="task--2" /> <div class="task__field task--row"> Read 15 pages<button class="task__important"><i class="fa fa-check" aria-hidden="true"></i></button></div></label>
-    <label for="task--3" class="task"><input class="task__check" type="checkbox" id="task--3" /> <div class="task__field task--row"> Exercise for 30 minutes<button class="task__important"><i class="fa fa-check" aria-hidden="true"></i></button></div></label>
-    <label for="task--4" class="task"><input class="task__check" type="checkbox" id="task--4" /> <div class="task__field task--row"> Meditate<button class="task__important"><i class="fa fa-check" aria-hidden="true"></i></button></div></label>
-    </div>
-      <div class="task--row task__footer">
-
-    <input class="task__add" type="text" value="+ add new goal">
-  </div>
-  </form>
-</div>
-
-      <script src="script.js"></script>
-      <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    </body>
-=======
 
 <div id="myDIV" class="header">
   <h2 style="margin:5px">My To Do List</h2>
@@ -169,8 +142,19 @@ input {
   <li>Organize office</li>
 </ul>
 
+<div>
+  <h3>Database</h3>
+  <form method="get" action="/home/goals/">
+    <button name="loadBtn" id="loadBtn">Load My Items</button>
+  </form>
+  <form method="post" action="">
+    <button name="saveBtn" id="saveBtn">Save My Items</button>
+  </form>
+</div>
+
 <script>
 // Create a "close" button and append it to each list item
+let todoItems = [];
 var myNodelist = document.getElementsByTagName("LI");
 var i;
 for (i = 0; i < myNodelist.length; i++) {
@@ -228,5 +212,4 @@ function newElement() {
 </script>
 
 </body>
->>>>>>> 5b7d8bbda192e6d831d39dbc7d60e672d0028cec
 </html>
