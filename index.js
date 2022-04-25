@@ -34,7 +34,7 @@ if(port_from_sec_arg > 0 && port_from_sec_arg < 65536) {
 
 app.use( (req, res, next) => {
     // Your middleware goes here.
-    addData(req, res, next)
+    midware.addData(req, res, next)
     res.status(200)
 })
 
@@ -123,13 +123,13 @@ app.get('/home/goals/:username', (req, res, next) => {
     res.status(200).json(get)
 })
 
-app.get('/user-account-page', (req, res) => {
-    res.sendFile('public/views/user-account/user-account-page.html' , { root : __dirname});
+app.get('/user-account-page/:user', (req, res) => {
+    res.sendFile('public/views/user-account/user-account-page.html' , { root : __dirname, "user":req.params.user });
 })
 
 // ◀️ MY ENDPOINT
 // 🗒️ idk how to test this out yet, but it should work
-app.get('/user-account-page/:username/', (req, res) => {
+app.get('/user-account-page/get/:username/', (req, res) => {
     try {
         const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ?').get(req.params.username);
         res.status(200).json(stmt);
