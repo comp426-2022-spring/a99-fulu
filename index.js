@@ -54,13 +54,27 @@ app.get('/login', (req, res) => {
 app.get('/make-account', (req, res) => {
     res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
 })
+
+//  ▶️ OLD ENDPOINT
+// app.post('/make-account/make/', (req, res, next) => {
+//     const username = req.body.user
+//     const password = req.body.pass
+//     // todo: middleware to add the new user to the database
+//     // todo: i also have no idea how to check to make sure the user isn't already in the database
+//     addUser(username, password)
+//     res.status(200).json({user: username, pass: password})
+// })
+
+// ◀️ MY ENDPOINT
+// 🗒️ idk how to test this out yet, but it should work with the frontend html form with form body params
 app.post('/make-account/make/', (req, res, next) => {
-    const username = req.body.user
-    const password = req.body.pass
-    // todo: middleware to add the new user to the database
-    // todo: i also have no idea how to check to make sure the user isn't already in the database
-    addUser(username, password)
-    res.status(200).json({user: username, pass: password})
+    let data = {
+        user: req.body.username,
+        pass: req.body.password
+    };
+    const stmt = db.prepare('INSERT INTO userinfo (user, pass) VALUES (?, ?)');
+    const info = stmt.run(data.user, data.pass);
+    res.status(200).json();
 })
 
 app.get('/index', (req, res) => {
@@ -84,15 +98,38 @@ app.get('/home/goals/:user', (req, res, next) => {
 app.get('/user-account-page', (req, res) => {
     res.sendFile('public/views/user-account/user-account-page.html' , { root : __dirname});
 })
+
+//  ▶️ OLD ENDPOINT
+// app.get('/user-account-page/:username/', (req, res) => {
+//     // todo: make userDetails middleware
+//     const userDetails = getUserDetails(req.params.username)
+//     res.status(200).json(userDetails)
+// })
+
+// ◀️ MY ENDPOINT
+// 🗒️ idk how to test this out yet, but it should work
 app.get('/user-account-page/:username/', (req, res) => {
-    // todo: make userDetails middleware
-    const userDetails = getUserDetails(req.params.username)
-    res.status(200).json(userDetails)
+    try {
+        const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ?').get(req.params.username);
+        res.status(200).json(stmt);
+    } catch (e) {
+        console.error(e);
+    }
 })
-app.delete('/user-account-page/delete/:username/', (req, res) => {
-    // todo: write delete endpoint
-    // the endpoint is supposed to delete the user's account and then redirect to login page
-    // i have no idea what the structure of a delete endpoint looks like
+
+//  ▶️ OLD ENDPOINT
+// app.delete('/user-account-page/delete/:username/', (req, res) => {
+//     // todo: write delete endpoint
+//     // the endpoint is supposed to delete the user's account and then redirect to login page
+//     // i have no idea what the structure of a delete endpoint looks like
+// })
+
+// ◀️ MY ENDPOINT
+// 🗒️ idk how to test this out yet, but it should work
+app.delete("/user-account-page/delete/:username/", (req, res) => {
+    const stmt = logdb.prepare('DELETE FROM userinfo WHERE user = ?');
+    const info = stmt.run(req.params.id);
+    res.status(200).json(info);
 })
 
 app.get('/add-goals', (req, res) => {
