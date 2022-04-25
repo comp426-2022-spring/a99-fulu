@@ -87,6 +87,11 @@ app.get('/make-account', (req, res) => {
     res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
 })
 
+app.get('/make-account/', (req, res) => {
+    res.redirect('/make-account');
+    res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
+})
+
 //  ▶️ OLD ENDPOINT
 // app.post('/make-account/make/', (req, res, next) => {
 //     const username = req.body.user
