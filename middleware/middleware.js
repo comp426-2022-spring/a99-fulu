@@ -1,5 +1,5 @@
 // Middleware function definitions go here
-const db = require('../services/database.js')
+const db = require('../data/database.js')
 
 const addData = (req, res, next) => {
     let logdata = {
