@@ -1,3 +1,5 @@
+(function ($) {
+
 $('.task__add').on('focus',function(){
   $(this).val('');
 });
@@ -60,3 +62,5 @@ function checkList() {
 }
 
 checkList();
+
+})(jQuery);
