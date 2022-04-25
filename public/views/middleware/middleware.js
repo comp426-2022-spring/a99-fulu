@@ -1,6 +1,7 @@
-// Middleware function definitions go here
+// add middleware
 const db = require('../data/database.js')
 
+// adds logdata to table with middleware
 const addData = (req, res, next) => {
     let logdata = {
         remoteaddr: req.ip,
@@ -23,4 +24,4 @@ const addData = (req, res, next) => {
     next()
 }
 
-module.exports = {addData}
+module.exports = {addData} 

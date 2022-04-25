@@ -20,6 +20,7 @@
     "better-sqlite3": "^7.5.1",
     "express": "^4.17.3",
     "fs": "^0.0.1-security",
+    "jquery": "^3.6.0",
     "morgan": "^1.10.0"
   }
 }
