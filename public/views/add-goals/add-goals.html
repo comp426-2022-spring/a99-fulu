@@ -123,7 +123,9 @@ input {
 .addBtn:hover {
   background-color: #bbb;
 }
+
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
 
@@ -144,15 +146,16 @@ input {
 
 <div>
   <h3>Database</h3>
-  <form method="get" action="/home/goals/">
-    <button name="loadBtn" id="loadBtn">Load My Items</button>
-  </form>
-  <form method="post" action="">
-    <button name="saveBtn" id="saveBtn">Save My Items</button>
-  </form>
+  <button onclick="loadItems()" name="loadBtn" id="loadBtn">Load My Items</button>
+  <button onclick="saveItems()" name="saveBtn" id="saveBtn">Save My Items</button>
 </div>
 
 <script>
+
+// Global Consts
+var username = "<%= username %>";
+console.log(username);
+
 // Create a "close" button and append it to each list item
 let todoItems = [];
 var myNodelist = document.getElementsByTagName("LI");
@@ -182,6 +185,24 @@ list.addEventListener('click', function(ev) {
     ev.target.classList.toggle('checked');
   }
 }, false);
+
+// Save Items Function
+function saveItems() {
+
+}
+
+// Load Items Function
+function loadItems() {
+
+  console.log(username);
+  $.ajax({
+    url: '/home/goals/'+username,
+    complete: function(data) {
+      console.log(data);
+    }
+  });
+
+}
 
 // Create a new list item when clicking on the "Add" button
 function newElement() {

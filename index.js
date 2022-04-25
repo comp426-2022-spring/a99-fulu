@@ -59,24 +59,13 @@ app.post('/login-user/', (req, res) => {
         // res.status(200).json(stmt);
         // console.log(stmt);
         if(stmt){
-            res.redirect('/add-goals/')
+            res.redirect('/add-goals/'+data.user)
         } else {
             res.redirect('/');
         }
     } catch(e) {
         res.redirect('/');
     }
-
-    // res.redirect('/add-goals/')
-
-    // res.redirect('/add-goals/');
-
-    // res.redirect('/home/goals/' + data.user);
-
-    // res.redirect('/user-account-page/' + data.user);
-
-    // res.status(200).json(stmt);
-    // res.sendFile('public/views/user-account/user-account-page.html' , { root : __dirname});
 })
 
 app.get('/login', (req, res) => {
@@ -125,12 +114,12 @@ app.get('/home/goals/', (req, res, next) => {
     res.status(200).json(get)
 })
 
-app.get('/home/goals/:user', (req, res, next) => {
-    const user = req.params.user
+app.get('/home/goals/:username', (req, res, next) => {
+    const username = req.params.user
     const get = db.prepare(`
         SELECT goalID, goal
         FROM goals
-        WHERE user='` + user + `'
+        WHERE user='` + username + `'
     `).all()
     // const goals = get.run(user)
     res.status(200).json(get)
@@ -164,6 +153,12 @@ app.delete("/user-account-page/delete/:username/", (req, res) => {
     const stmt = logdb.prepare('DELETE FROM userinfo WHERE user = ?');
     const info = stmt.run(req.params.id);
     res.status(200).json(info);
+})
+
+app.get('/add-goals/:user', (req, res) => {
+    let username = req.params.user;
+    // res.send('public/views/add-goals/add-goals.html', {username:username});
+    res.sendFile('public/views/add-goals/add-goals.html', { root : __dirname, username:username});
 })
 
 app.get('/add-goals', (req, res) => {
