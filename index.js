@@ -32,11 +32,11 @@ if(port_from_sec_arg > 0 && port_from_sec_arg < 65536) {
 // console.log(sec_arg + " is the second argument")
 // console.log(port + " is the port")
 
-// app.use( (req, res, next) => {
-//     // Your middleware goes here.
-//     addData(req, res, next)
-//     res.status(200)
-// })
+app.use( (req, res, next) => {
+    // Your middleware goes here.
+    addData(req, res, next)
+    res.status(200)
+})
 
 // Use morgan for logging to files
 const accessLog = fs.createWriteStream('./data/access.log', { flags: 'a' })
@@ -76,8 +76,6 @@ app.get('/make-account', (req, res) => {
     res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
 })
 
-// ◀️ MY ENDPOINT
-// 🗒️ idk how to test this out yet, but it should work with the frontend html form with form body params
 app.post('/make-account/make/', (req, res, next) => {
     let data = {
         user: req.body.username,
@@ -139,13 +137,6 @@ app.get('/user-account-page/:username/', (req, res) => {
         console.error(e);
     }
 })
-
-//  ▶️ OLD ENDPOINT
-// app.delete('/user-account-page/delete/:username/', (req, res) => {
-//     // todo: write delete endpoint
-//     // the endpoint is supposed to delete the user's account and then redirect to login page
-//     // i have no idea what the structure of a delete endpoint looks like
-// })
 
 // ◀️ MY ENDPOINT
 // 🗒️ idk how to test this out yet, but it should work
