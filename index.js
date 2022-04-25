@@ -133,7 +133,7 @@ app.delete("/user-account-page/delete/:username/", (req, res) => {
 })
 
 app.get('/add-goals', (req, res) => {
-    res.sendFile('public/views/add-goals.html' , { root : __dirname});
+    res.sendFile('public/views/add-goals/add-goals.html' , { root : __dirname});
 })
 app.post('/add-goals/add/', (req, res, next) => {
     const goal = req.body.goal
