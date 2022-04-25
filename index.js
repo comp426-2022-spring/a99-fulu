@@ -52,8 +52,8 @@ app.post('/login-user/', (req, res) => {
         user: req.body.username,
         pass: req.body.password
     };
-    console.log(data.user);
-    console.log(data.pass);
+    // console.log(data.user);
+    // console.log(data.pass);
     const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ? AND pass = ?').get(data.user, data.pass);
 
     res.redirect('/user-account-page/' + data.user);
@@ -88,7 +88,7 @@ app.post('/make-account/make/', (req, res, next) => {
     };
     const stmt = db.prepare('INSERT INTO userinfo (user, pass) VALUES (?, ?)');
     const info = stmt.run(data.user, data.pass);
-    res.status(200).json();
+    res.status(200).redirect('/');
 })
 
 app.get('/index', (req, res) => {
