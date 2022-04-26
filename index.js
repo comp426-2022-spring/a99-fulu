@@ -47,7 +47,14 @@ app.use(morgan('combined', { stream: accessLog }))
 
 // endpoints
 app.get('/', (req, res) => {
-    res.sendFile('public/views/login/login.html' , { root : __dirname});
+    res.render(path.join(__dirname, 'public/views/login/login.html'), {message:false, error:false});
+})
+app.get('/user-created/', (req, res) => {
+    res.render(path.join(__dirname, 'public/views/login/login.html'), {message:true, error:false});
+})
+
+app.get('/bad-login/', (req, res) => {
+    res.render(path.join(__dirname, 'public/views/login/login.html'), {message:false, error:true});
 })
 
 app.post('/login-user/', (req, res) => {
@@ -64,7 +71,7 @@ app.post('/login-user/', (req, res) => {
         if(stmt){
             res.redirect('/add-goals/'+data.user)
         } else {
-            res.redirect('/');
+            res.redirect('/bad-login');
         }
     } catch(e) {
         res.redirect('/');
@@ -75,8 +82,12 @@ app.get('/login', (req, res) => {
     res.sendFile('public/views/login/login.html' , { root : __dirname});
 })
 
-app.get('/make-account', (req, res) => {
-    res.sendFile('public/views/make-account/make-account.html' , { root : __dirname});
+app.get('/make-account/', (req, res) => {
+    res.render(path.join(__dirname, 'public/views/make-account/make-account.html'), {message:false});
+})
+
+app.get('/user-exists/', (req, res) => {
+    res.render(path.join(__dirname, 'public/views/make-account/make-account.html'), {message:true});
 })
 
 app.post('/make-account/make/', (req, res, next) => {
@@ -88,12 +99,13 @@ app.post('/make-account/make/', (req, res, next) => {
     const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ?').get(data.user);
 
     if(stmt){
-        // res.sendFile('public/views/make-account/make-account.html' , { root : __dirname, message: "Username already exists" });
-        res.status(200).redirect('/make-account/');
+        // res.render(path.join(__dirname, 'public/views/make-account/make-account.html'), {message:true});
+        res.redirect('/user-exists');
     } else {
         const make = db.prepare('INSERT INTO userinfo (user, pass) VALUES (?, ?)');
         const info = make.run(data.user, data.pass);
-        res.status(200).redirect('/');
+        // res.render(path.join(__dirname, 'public/views/login/login.html'), {message:true});
+        res.redirect('/user-created');
     }
 })
 

@@ -14,6 +14,11 @@
 <body class="form-v5">
 	<div class="page-content">
 		<div class="form-v5-content">
+			<% if(message) { %>
+				<div class="alert alert-danger">
+					USER EXISTS ALREADY
+				</div>
+			<% } %>
 			<form class="form-detail" action="/make-account/make" method="post">
 				<h2>Create an Account</h2>
 				<div class="form-row">
