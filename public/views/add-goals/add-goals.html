@@ -4,10 +4,10 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <div class="topnav">
-  <a>Hello <%= username %></a>
-  <a class="active" href="#home">Goals Page</a>
-  <a href="#news">Settings</a>
-  <a href="#contact">Logout</a>
+  <a>Hello, <%= username %> </a>
+  <a class="active">Goals Page</a>
+  <a href="/user-account-page/<%= username %>"><%= username %> Settings</a>
+  <a href="/">Logout</a>
 </div>
 
 <div class="container">
