@@ -19,14 +19,14 @@
 
         <div id="id01" class="modal">
           <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-          <form class="modal-content" action="/action_page.php">
+          <form class="modal-content" action="/login-user/" method="get">
             <div class="container1">
               <h1>Delete Account</h1>
               <p>Are you sure you want to delete your account?</p>
         
               <div class="clearfix">
-                <button type="button" class="cancelbtn">Cancel</button>
-                <button type="button" class="deletebtn">Delete</button>
+                <button type="button" class="cancelbtn" onclick="document.getElementById('id01').style.display='none'">Cancel</button>
+                <button type="button" class="deletebtn" id="deleteacct">Delete</button>
               </div>
             </div>
           </div>
@@ -37,7 +37,6 @@
       <script>
         document.addEventListener("DOMContentLoaded", getName);
         async function getName(){
-          console.log('function')
           const url = document.documentURI + '/get/'
           const userInfo = await fetch(url).then(function(response) {
             return response.json()
@@ -48,6 +47,13 @@
             <h3 id=>` + userInfo.user + `</h3>
             <p>` + userInfo.pass + `</p>
           `
+        }
+
+        const deletebtn = document.getElementById('deleteacct')
+        deletebtn.addEventListener('click', deleteuser)
+        function deleteuser() {
+          console.log('deleting')
+          location.href = document.documentURI + '/delete/'
         }
       </script>
   </body>

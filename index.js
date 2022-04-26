@@ -144,10 +144,10 @@ app.get('/user-account-page/:user/get', (req, res) => {
 })
 
 // delete user account page
-app.delete("/user-account-page/delete/:username/", (req, res) => {
+app.get("/user-account-page/:username/delete", (req, res) => {
     const stmt = db.prepare('DELETE FROM userinfo WHERE user = ?');
-    const info = stmt.run(req.params.id);
-    res.status(200).json(info);
+    const info = stmt.run(req.params.username);
+    res.redirect('/')
 })
 
 // delete user account page
