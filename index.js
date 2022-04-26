@@ -16,6 +16,9 @@ app.use(express.urlencoded({extended: true}))
 // allow access to public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
 // parse args
 sec_arg = process.argv.slice(2);
 let sec_arg_num;
@@ -85,7 +88,8 @@ app.post('/make-account/make/', (req, res, next) => {
     const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ?').get(data.user);
 
     if(stmt){
-        res.redirect('/make-account');
+        // res.sendFile('public/views/make-account/make-account.html' , { root : __dirname, message: "Username already exists" });
+        res.status(200).redirect('/make-account/');
     } else {
         const make = db.prepare('INSERT INTO userinfo (user, pass) VALUES (?, ?)');
         const info = make.run(data.user, data.pass);
@@ -115,12 +119,12 @@ app.get('/home/goals/', (req, res, next) => {
 app.get('/home/goals/:username', (req, res, next) => {
     const username = req.params.user
     const get = db.prepare(`
-        SELECT goalID, goal
+        SELECT goal
         FROM goals
         WHERE user='` + username + `'
     `).all()
     // const goals = get.run(user)
-    res.status(200).json(get)
+    res.status(200).json(get);
 })
 
 app.get('/user-account-page/:user', (req, res) => {
@@ -141,15 +145,35 @@ app.get('/user-account-page/:user/get', (req, res) => {
 // ◀️ MY ENDPOINT
 // 🗒️ idk how to test this out yet, but it should work
 app.delete("/user-account-page/delete/:username/", (req, res) => {
-    const stmt = logdb.prepare('DELETE FROM userinfo WHERE user = ?');
+    const stmt = db.prepare('DELETE FROM userinfo WHERE user = ?');
     const info = stmt.run(req.params.id);
     res.status(200).json(info);
+})
+
+app.delete("/delete-goal/", (req, res) => {
+    console.log(req.body.user + req.body.goal);
+    const stmt = db.prepare('DELETE FROM goals WHERE user = ? AND goal = ?').run(req.body.user, req.body.goal);
+    if(stmt){
+        res.status(200).json({message:"success"});
+    } else {
+        res.status(500).json({message:"error"});
+    }
+    // res.status(200).json(info);
+    // res.status(200).redirect(/add-goals/ + req.body.user);
 })
 
 app.get('/add-goals/:user', (req, res) => {
     let username = req.params.user;
     // res.send('public/views/add-goals/add-goals.html', {username:username});
-    res.sendFile('public/views/add-goals/add-goals.html', { root : __dirname, username:username});
+    // res.sendFile('public/views/add-goals/add-goals.html', { root : __dirname, username:username});
+    const get = db.prepare(`
+        SELECT *
+        FROM goals
+        WHERE user='` + username + `'
+    `).all()
+    // const goals = get.run(user)
+
+    res.render(path.join(__dirname, 'public/views/add-goals/add-goals.html'), {username:username, todoItems:get});
 })
 
 app.get('/add-goals', (req, res) => {
@@ -165,7 +189,8 @@ app.post('/add-goals/add/', (req, res, next) => {
     `)
     add.run(user, goal)
 
-    res.status(200).json({"goal": goal, "user": user})
+    // res.status(200).json({"goal": goal, "user": user})
+    res.status(200).redirect('/add-goals/'+user);
 })
 
 app.get('/goal-details', (req, res) => {
