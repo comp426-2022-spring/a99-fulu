@@ -4,9 +4,10 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <div class="topnav">
-  <a class="active" href="#home">Goals Page</a>
-  <a href="#news">Settings</a>
-  <a href="#contact">Logout</a>
+  <a>Hello, <%= username %> </a>
+  <a class="active">Goals Page</a>
+  <a href="/user-account-page/<%= username %>"><%= username %> Settings</a>
+  <a href="/">Logout</a>
 </div>
 
 <div class="container">
@@ -70,7 +71,7 @@ box-sizing: border-box;
 height: auto ;
 width: 50%;
 margin: auto;
-box-shadow: 0 0 2px hsla(0,0%,0%,0.2); 
+box-shadow: 0 0 2px hsla(0,0%,0%,0.2);
 border-radius:6px;
 background-color:#f8f8f8;
 margin-top: 50px;
@@ -193,27 +194,36 @@ border-bottom-right-radius:6px;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-
+<!--
 <div id="myDIV" class="header">
   <h2 style="margin:5px">My To Do List</h2>
   <input type="text" id="myInput" placeholder="Title...">
   <span onclick="newElement()" class="addBtn">Add</span>
+</div> -->
+
+<form method="post" action="/add-goals/add/">
+<div id="myDIV" class="header">
+  <h2 style="margin:5px">My To Do List</h2>
+  <input name="goal" placeholder="goal">
+  <input type="hidden" name="user" value="<%= username %>">
+  <input class="addBtn" type="submit" value="Add">
 </div>
+</form>
 
 <ul id="myUL">
-  <li>Hit the gym</li>
+  <!-- <li>Hit the gym</li>
   <li class="checked">Pay bills</li>
   <li>Meet George</li>
   <li>Buy eggs</li>
   <li>Read a book</li>
-  <li>Organize office</li>
+  <li>Organize office</li> -->
 </ul>
 
-<div>
+<!-- <div>
   <h3>Database</h3>
   <button onclick="loadItems()" name="loadBtn" id="loadBtn">Load My Items</button>
   <button onclick="saveItems()" name="saveBtn" id="saveBtn">Save My Items</button>
-</div>
+</div> -->
 
 <script>
 
@@ -221,8 +231,25 @@ border-bottom-right-radius:6px;
 var username = "<%= username %>";
 console.log(username);
 
+console.log("<%= todoItems.length %>");
+
+<% todoItems.forEach(function(todo) { %>
+try {
+  console.log("<%= todo.goal %>");
+  console.log("<%= todo.goalID %>");
+  newElement("<%= todo.goal %>");
+} catch (err) {
+  console.log(err);
+}
+
+<% }) %>
+<% if(todoItems.length == 0) { %>
+  console.log("list empty, generating new items")
+  newElement("Add some goals!");
+  newElement("Delete goals by clicking on the ❌");
+<% } %>
+
 // Create a "close" button and append it to each list item
-let todoItems = [];
 var myNodelist = document.getElementsByTagName("LI");
 var i;
 for (i = 0; i < myNodelist.length; i++) {
@@ -240,6 +267,19 @@ for (i = 0; i < close.length; i++) {
   close[i].onclick = function() {
     var div = this.parentElement;
     div.style.display = "none";
+
+    // make request here to delete the goal
+    console.log("<%= username %> "+ i);
+    let data = {user: "<%= username %>", goal:this.parentElement.innerText.substring(0, this.parentElement.innerText.length-1)};
+    fetch("/delete-goal/", {
+      method: "DELETE",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    }).then(res => {
+      console.log("Request complete! response:", res);
+      location.reload();
+    });
+
   }
 }
 
@@ -251,24 +291,6 @@ list.addEventListener('click', function(ev) {
   }
 }, false);
 
-// Save Items Function
-function saveItems() {
-
-}
-
-// Load Items Function
-function loadItems() {
-
-  console.log(username);
-  $.ajax({
-    url: '/home/goals/'+username,
-    complete: function(data) {
-      console.log(data);
-    }
-  });
-
-}
-
 // Create a new list item when clicking on the "Add" button
 function newElement() {
   var li = document.createElement("li");
@@ -276,7 +298,7 @@ function newElement() {
   var t = document.createTextNode(inputValue);
   li.appendChild(t);
   if (inputValue === '') {
-    alert("You must write something!");
+    console.log("input value was empty");
   } else {
     document.getElementById("myUL").appendChild(li);
   }
@@ -294,6 +316,33 @@ function newElement() {
       div.style.display = "none";
     }
   }
+}
+
+function newElement(inputValue) {
+  var li = document.createElement("li");
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    console.log("input value was empty");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+  }
+  document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+
+
 }
 </script>
 

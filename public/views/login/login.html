@@ -31,6 +31,16 @@
 					<img src="views/login/images/img-01.png" alt="IMG">
 				</div>
 
+				<% if(message) { %>
+					<div class="alert alert-success">
+						USER ADDED
+					</div>
+				<% } %>
+				<% if(error) { %>
+					<div class="alert alert-danger">
+						ERROR - BAD LOGIN
+					</div>
+				<% } %>
 				<form action="/login-user/" method="post" class="login100-form validate-form">
 					<span class="login100-form-title">
 						Member Login
