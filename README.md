@@ -2,25 +2,14 @@
 
 ## Personal Tracking Description 
 
-COMP426 final project template repository.
-All your code and documentation goes here.
-Change this text to be a brief description of your final project.
-Put the name of your project in the header above.
-You will change everything below to be the main technical documentation, as outlined below.
+Our final project is a mental health tracking app where you can create and keep track of goals you want to accomplish. Users will be able to create an account with a username, email and password which will be entered into our login database. After creating an account the user is automatically sent to create a list of their goals where they are able to delete, edit and check off any item on the list. As well as a settings button that directs them to their account page where they can see their information and delete their account if desired.
 
-## First steps
+Links to documentation: `/docs/Endpoints.md` - List and description of all API endpoints created
 
-Other steps that you will need to take after your team has accepted the assignment:
+## How to Use
 
-1. Choose a license and update the LICENSE file accordingly. 
-2. Edit this README.md file and use it as the main location of your technical documentation with links out to information contained under `/docs/`.
-3. Create a `/docs/` directory for more elaborate documentation of your API, planning notes, etc.
-4. Make sure that all of your team members have access to the repository as administrators.
-5. Create a project under the **Projects** tab. Use this to manage your planning. Create a To-do list, etc. Explore the tools available and user them to manage your project.
-7. Assign team roles and include a listing of those roles in this README.md file or in another file under `/docs/`.
-8. Then put your entire development workflow in this repository.
-9. Use **Pull requests** to propose changes and incorporate them into your code from various team members. 
-10. Use **Issues** to identify and track bugs and also to communicate about various aspects of the project.
+To start the app, please use `npm install` in a terminal, which will install the required dependecies and then type `node index.js` to start the server. Open http://localhost:5000 to view it in your browser. From there you will have the option to login or make an account!
+
 
 ## Team mangement
 
@@ -31,10 +20,11 @@ Other steps that you will need to take after your team has accepted the assignme
     4. Design lead: Nina Sehgal
 
 
-## Personal Tracking Installation
+## Dependencies list
 
-And that is about all you need to get started.
-
-All the rest of the assignment instructions are available at: https://comp426.johndmart.in/a/99
-
-Good skill and be creative!
+    1. Better-sqlite3
+    2. Ejs
+    3. Express
+    4. Fs
+    5. Jquery
+    6. Morgan
