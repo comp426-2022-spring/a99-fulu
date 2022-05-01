@@ -8,11 +8,11 @@ const midware = require('./middleware/middleware.js')
 const fs = require('fs');
 const morgan = require('morgan');
 const path = require('path');
+const args = require('minimist')(process.argv.slice(2))
 
 
 
 // middleware
-// some add data middle ware ▶️ not sure if we need this one?
 app.use( (req, res, next) => {
     midware.addData(req, res, next)
     res.status(200)
@@ -33,19 +33,8 @@ app.use(morgan('combined', { stream: accessLog }))
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
-// parse args
-sec_arg = process.argv.slice(2);
-let sec_arg_num;
-if (sec_arg.toString().includes('=')) {
-    const index = sec_arg.toString().indexOf('=');
-    sec_arg_num = sec_arg.toString().substring(index+1);
-}
-const port_from_sec_arg = parseInt(sec_arg_num);
-if(port_from_sec_arg > 0 && port_from_sec_arg < 65536) {
-    port = sec_arg_num;
-} else {
-    port = 5000;
-}
+// configure the port
+const port = args.port || process.env.PORT || 5000
 
 
 
@@ -91,7 +80,6 @@ app.post('/make-account/make/', (req, res, next) => {
     } else {
         const make = db.prepare('INSERT INTO userinfo (user, pass) VALUES (?, ?)');
         const info = make.run(data.user, data.pass);
-        // res.render(path.join(__dirname, 'public/views/login/login.html'), {message:true});
         res.redirect('/user-created');
     }
 })
@@ -104,8 +92,6 @@ app.post('/login-user/', (req, res) => {
     };
     try {
         const stmt = db.prepare('SELECT * FROM userinfo WHERE user = ? AND pass = ?').get(data.user, data.pass);
-        // res.status(200).json(stmt);
-        // console.log(stmt);
         if(stmt){
             res.redirect('/add-goals/'+data.user)
         } else {
@@ -159,15 +145,11 @@ app.delete("/delete-goal/", (req, res) => {
     } else {
         res.status(500).json({message:"error"});
     }
-    // res.status(200).json(info);
-    // res.status(200).redirect(/add-goals/ + req.body.user);
 })
 
 // render add goals user page ▶️ do we keep this one or the one below?
 app.get('/add-goals/:user', (req, res) => {
     let username = req.params.user;
-    // res.send('public/views/add-goals/add-goals.html', {username:username});
-    // res.sendFile('public/views/add-goals/add-goals.html', { root : __dirname, username:username});
     const get = db.prepare(`
         SELECT *
         FROM goals
@@ -220,20 +202,6 @@ app.get('/home/goals/:username', (req, res, next) => {
     res.status(200).json(get);
 })
 
-// render goal details page ▶️ i think we can delete this, unless you guys want individual goal detail pages?
-app.get('/goal-details', (req, res) => {
-    res.sendFile('public/views/goal-details.html' , { root : __dirname});
-})
-
-// render index page ▶️ seems unused, we can delete this
-app.get('/index', (req, res) => {
-    res.sendFile('public/views/index.html' , { root : __dirname});
-})
-
-// render home page ▶️ old dashboard page, we can delete this
-app.get('/home', (req, res) => {
-    res.sendFile('public/views/home/home.html' , { root : __dirname});
-})
 
 
 
@@ -247,3 +215,21 @@ const server = app.listen(port, () => {
 app.use((req, res) => {
     res.status(404).send("Endpoint does not exist 😞");
 })
+
+
+
+
+
+// deprecated endpoints
+// // render goal details page ▶️ i think we can delete this, unless you guys want individual goal detail pages?
+// app.get('/goal-details', (req, res) => {
+//     res.sendFile('public/views/goal-details.html' , { root : __dirname});
+// })
+// // render index page ▶️ seems unused, we can delete this
+// app.get('/index', (req, res) => {
+//     res.sendFile('public/views/index.html' , { root : __dirname});
+// })
+// // render home page ▶️ old dashboard page, we can delete this
+// app.get('/home', (req, res) => {
+//     res.sendFile('public/views/home/home.html' , { root : __dirname});
+// })
