@@ -8,7 +8,7 @@ Links to documentation: `/docs/Endpoints.md` - List and description of all API e
 
 ## How to Use
 
-To start the app, please use `npm install` in a terminal, which will install the required dependecies and then type `node index.js` to start the server. Open http://localhost:5000 to view it in your browser. From there you will have the option to login or make an account!
+To start the app, please use `npm install` in a terminal, which will install the required dependecies and then use `node index.js` to start the server. Open http://localhost:5000 to view it in your browser. From there you will have the option to login or make an account!
 
 
 ## Team mangement
