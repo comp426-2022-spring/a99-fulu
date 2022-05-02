@@ -4,7 +4,9 @@
 
 Our final project is a mental health tracking app where you can create and keep track of goals you want to accomplish. Users will be able to create an account with a username, email and password which will be entered into our login database. After creating an account the user is automatically sent to create a list of their goals where they are able to delete, edit and check off any item on the list. As well as a settings button that directs them to their account page where they can see their information and delete their account if desired.
 
-Links to documentation: `/docs/Endpoints.md` - List and description of all API endpoints created
+Links to documentation: 
+-`/docs/Endpoints.md` - List and description of all API endpoints created
+-`/docs/planning.md` - Meeting dates and planning notes for the app
 
 ## How to Use
 
