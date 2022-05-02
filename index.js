@@ -54,10 +54,6 @@ app.get('/bad-login/', (req, res) => {
     res.render(path.join(__dirname, 'public/views/login/login.html'), {message:false, error:true});
 })
 
-// repeat login endpoint ▶️ do we need this?
-app.get('/login', (req, res) => { res.sendFile('public/views/login/login.html' , { root : __dirname});
-})
-
 // render make account page
 app.get('/make-account/', (req, res) => {
     res.render(path.join(__dirname, 'public/views/make-account/make-account.html'), {message:false});
@@ -147,7 +143,7 @@ app.delete("/delete-goal/", (req, res) => {
     }
 })
 
-// render add goals user page ▶️ do we keep this one or the one below?
+// render add goals user page
 app.get('/add-goals/:user', (req, res) => {
     let username = req.params.user;
     const get = db.prepare(`
@@ -158,11 +154,6 @@ app.get('/add-goals/:user', (req, res) => {
     // const goals = get.run(user)
 
     res.render(path.join(__dirname, 'public/views/add-goals/add-goals.html'), {username:username, todoItems:get});
-})
-
-// render add goals user page ▶️ i think we can delete this, we use the one above
-app.get('/add-goals', (req, res) => {
-    res.sendFile('public/views/add-goals/add-goals.html' , { root : __dirname});
 })
 
 // add a goal to the database
@@ -202,6 +193,10 @@ app.get('/home/goals/:username', (req, res, next) => {
     res.status(200).json(get);
 })
 
+// required api root endpoint
+app.get('/app/', (req, res, next) => {
+    res.status(200).send('required api root endpoint');
+})
 
 
 
@@ -221,6 +216,9 @@ app.use((req, res) => {
 
 
 // deprecated endpoints
+// // repeat login endpoint ▶️ do we need this?
+// app.get('/login', (req, res) => { res.sendFile('public/views/login/login.html' , { root : __dirname});
+// })
 // // render goal details page ▶️ i think we can delete this, unless you guys want individual goal detail pages?
 // app.get('/goal-details', (req, res) => {
 //     res.sendFile('public/views/goal-details.html' , { root : __dirname});
@@ -232,4 +230,8 @@ app.use((req, res) => {
 // // render home page ▶️ old dashboard page, we can delete this
 // app.get('/home', (req, res) => {
 //     res.sendFile('public/views/home/home.html' , { root : __dirname});
+// })
+// // render add goals user page ▶️ i think we can delete this, we use the one above
+// app.get('/add-goals', (req, res) => {
+//     res.sendFile('public/views/add-goals/add-goals.html' , { root : __dirname});
 // })
